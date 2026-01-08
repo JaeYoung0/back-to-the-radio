@@ -30,36 +30,90 @@ export function App() {
   }, [searchValue]);
 
   return (
-    <>
-      <h1>추억 라디오</h1>
-      <h3>
-        타블로 꿈꾸라 2기 <br />
-        2014년 4월 21일 ~ 2015년 11월 15일
-      </h3>
+    <div class="radio-body">
+      {/* 라디오 표시등 */}
+      <div class="radio-indicator">
+        <div class="indicator-light"></div>
+        <div class="indicator-light"></div>
+        <div class="indicator-light"></div>
+      </div>
 
-      <input
-        value={searchValue}
-        placeholder="제목을 입력해주세요"
-        // https://preactjs.com/guide/v10/differences-to-react/#use-oninput-instead-of-onchange
-        onInput={handleChange}
-      />
+      {/* 헤더 영역 */}
+      <header class="radio-header">
+        <h1>추억 라디오</h1>
+        <h3>
+          타블로 꿈꾸라 2기 <br />
+          2014년 4월 21일 ~ 2015년 11월 15일
+        </h3>
+      </header>
 
-      <ol style={{ height: "100%" }}>
+      {/* 스피커 그릴 장식 */}
+      <div class="speaker-grill">
+        <div class="grill-line"></div>
+        <div class="grill-line"></div>
+        <div class="grill-line"></div>
+        <div class="grill-line"></div>
+        <div class="grill-line"></div>
+      </div>
+
+      {/* 다이얼 패널 */}
+      <div class="dial-panel">
+        {/* 주파수 표시 */}
+        <div class="frequency-display">
+          <p class="frequency-text">FM 89.1 MHz ─ MBC RADIO</p>
+        </div>
+
+        {/* 검색창 */}
+        <div class="search-container">
+          <input
+            value={searchValue}
+            placeholder="제목을 입력해주세요"
+            onInput={handleChange}
+          />
+        </div>
+      </div>
+
+      {/* 에피소드 카운터 */}
+      <div class="episode-counter">
+        <p class="counter-text">
+          총 <span class="counter-number">{rows.length}</span>개의 추억
+        </p>
+      </div>
+
+      {/* 에피소드 목록 */}
+      <ol>
         {rows.map((row) => (
-          <li>
-            <p class="radio-date">{dayjs(row.PubDate).format("YYYY-MM-DD")}</p>
-            <p>{row.ContentTitle}</p>
-
+          <li key={row.PodCastItemIdx}>
+            <p class="radio-date">{dayjs(row.PubDate).format("YYYY.MM.DD")}</p>
+            <p class="episode-title">{row.ContentTitle}</p>
             <a
+              class="play-link"
               href={row.EncloserURL}
               download={row.ContentTitle}
               target="_blank"
             >
-              링크
+              듣기
             </a>
           </li>
         ))}
       </ol>
-    </>
+
+      {/* 볼륨 노브 장식 */}
+      <div class="volume-knobs">
+        <div>
+          <div class="knob"></div>
+          <p class="knob-label">VOLUME</p>
+        </div>
+        <div>
+          <div class="knob"></div>
+          <p class="knob-label">TUNING</p>
+        </div>
+      </div>
+
+      {/* 푸터 */}
+      <footer class="radio-footer">
+        <p class="footer-text">Made with ♥ for 꿈꾸는 라디오 listeners</p>
+      </footer>
+    </div>
   );
 }
