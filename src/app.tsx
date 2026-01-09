@@ -87,6 +87,8 @@ export function App() {
   const [currentMonth, setCurrentMonth] = useState(() => dayjs("2015-11-01"));
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [listDisplayCount, setListDisplayCount] = useState(50);
+  const [expandedCorners, setExpandedCorners] = useState<Set<string>>(new Set());
 
   // 필터링된 행
   const filteredRows = useMemo(() => {
@@ -197,6 +199,27 @@ export function App() {
     const dateStr = currentMonth.date(day).format("YYYY-MM-DD");
     return groupedByDate[dateStr] || [];
   };
+
+  const loadMoreList = () => {
+    setListDisplayCount((prev) => Math.min(prev + 50, filteredRows.length));
+  };
+
+  const toggleCornerExpand = (corner: string) => {
+    setExpandedCorners((prev) => {
+      const next = new Set(prev);
+      if (next.has(corner)) {
+        next.delete(corner);
+      } else {
+        next.add(corner);
+      }
+      return next;
+    });
+  };
+
+  // 필터 변경 시 리스트 카운트 리셋
+  useEffect(() => {
+    setListDisplayCount(50);
+  }, [searchValue, selectedCorners]);
 
   return (
     <div class="radio-body">
@@ -314,7 +337,7 @@ export function App() {
       {/* 리스트 뷰 */}
       {viewMode === "list" && (
         <ol class="episode-list">
-          {filteredRows.slice(0, 50).map((row, index) => (
+          {filteredRows.slice(0, listDisplayCount).map((row, index) => (
             <li key={row.PodCastItemIdx}>
               <span class="episode-number">{index + 1}일째</span>
               <p class="radio-date">{dayjs(row.PubDate).format("YYYY.MM.DD")}</p>
@@ -332,10 +355,10 @@ export function App() {
               </div>
             </li>
           ))}
-          {filteredRows.length > 50 && (
-            <p class="load-more-hint">
-              스크롤하여 더 많은 에피소드 보기... ({filteredRows.length - 50}개 더)
-            </p>
+          {filteredRows.length > listDisplayCount && (
+            <button class="load-more-btn" onClick={loadMoreList}>
+              더보기 ({filteredRows.length - listDisplayCount}개 더)
+            </button>
           )}
         </ol>
       )}
@@ -416,38 +439,46 @@ export function App() {
         <div class="corner-view">
           {Object.entries(groupedByCorner)
             .sort((a, b) => b[1].length - a[1].length)
-            .map(([corner, episodes]) => (
-              <div key={corner} class="corner-section">
-                <div class="corner-header">
-                  <h3 class="corner-name">{corner}</h3>
-                  <span class="corner-count">{episodes.length}회</span>
-                </div>
-                <ul class="corner-episode-list">
-                  {episodes.slice(0, 5).map((row) => (
-                    <li key={row.PodCastItemIdx}>
-                      <span class="episode-date">
-                        {dayjs(row.PubDate).format("MM.DD")}
-                      </span>
-                      <span class="episode-title-short">
-                        {row.ContentTitle.replace(/^\d+\/\d+\s*\S+\s*:\s*\d,\d부\s*/, '')}
-                      </span>
-                      <a
-                        class="play-link-small"
-                        href={row.EncloserURL}
-                        target="_blank"
-                      >
-                        ▶
-                      </a>
-                    </li>
-                  ))}
+            .map(([corner, episodes]) => {
+              const isExpanded = expandedCorners.has(corner);
+              const displayEpisodes = isExpanded ? episodes : episodes.slice(0, 5);
+
+              return (
+                <div key={corner} class="corner-section">
+                  <div class="corner-header">
+                    <h3 class="corner-name">{corner}</h3>
+                    <span class="corner-count">{episodes.length}회</span>
+                  </div>
+                  <ul class="corner-episode-list">
+                    {displayEpisodes.map((row) => (
+                      <li key={row.PodCastItemIdx}>
+                        <span class="episode-date">
+                          {dayjs(row.PubDate).format("MM.DD")}
+                        </span>
+                        <span class="episode-title-short">
+                          {row.ContentTitle.replace(/^\d+\/\d+\s*\S+\s*:\s*\d,\d부\s*/, '')}
+                        </span>
+                        <a
+                          class="play-link-small"
+                          href={row.EncloserURL}
+                          target="_blank"
+                        >
+                          ▶
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                   {episodes.length > 5 && (
-                    <li class="more-episodes">
-                      +{episodes.length - 5}개 더보기
-                    </li>
+                    <button
+                      class="corner-expand-btn"
+                      onClick={() => toggleCornerExpand(corner)}
+                    >
+                      {isExpanded ? "접기 ▲" : `+${episodes.length - 5}개 더보기 ▼`}
+                    </button>
                   )}
-                </ul>
-              </div>
-            ))}
+                </div>
+              );
+            })}
         </div>
       )}
 
