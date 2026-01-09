@@ -1,13 +1,36 @@
-html,
-body {
+/* === 아날로그 라디오 테마 === */
+
+/* Google Fonts 불러오기 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Playfair+Display:wght@400;700&display=swap');
+
+:root {
+  /* 따뜻한 아날로그 라디오 색상 팔레트 */
+  --radio-wood-dark: #5D4037;
+  --radio-wood: #795548;
+  --radio-wood-light: #8D6E63;
+  --radio-leather: #3E2723;
+  --radio-cream: #FFF8E1;
+  --radio-amber: #FFB300;
+  --radio-amber-glow: #FFC107;
+  --radio-dial: #FFE082;
+  --radio-speaker: #4E342E;
+  --radio-gold: #D4AF37;
+  --radio-warm-white: #FFFDE7;
+  --radio-text-dark: #3E2723;
+  --radio-text-warm: #5D4037;
+  --shadow-warm: rgba(62, 39, 35, 0.3);
+  --shadow-glow: rgba(255, 179, 0, 0.4);
+}
+
+html, body {
   height: 100%;
   width: 100%;
   padding: 0;
   margin: 0;
-  background: #fafafa;
-  font-family: "Helvetica Neue", arial, sans-serif;
+  background: linear-gradient(180deg, #2C1810 0%, #1A0F0A 100%);
+  font-family: 'Noto Serif KR', Georgia, serif;
   font-weight: 400;
-  color: #444;
+  color: var(--radio-cream);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -16,52 +39,928 @@ body {
   box-sizing: border-box;
 }
 
+/* 메인 라디오 컨테이너 */
 #app {
-  text-align: center;
-  background-color: #673ab8;
+  max-width: 800px;
+  margin: 0 auto;
   min-height: 100vh;
-  color: #fff;
-  font-size: 1.5em;
-  padding-top: 100px;
-
-  overflow-x: hidden;
+  padding: 40px 20px;
 }
 
-p {
-  margin-top: 0;
-  margin-bottom: 10px;
+/* 라디오 본체 */
+.radio-body {
+  background: linear-gradient(145deg, var(--radio-wood) 0%, var(--radio-wood-dark) 50%, var(--radio-leather) 100%);
+  border-radius: 30px;
+  padding: 40px;
+  box-shadow:
+    0 20px 60px var(--shadow-warm),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+  border: 3px solid var(--radio-wood-light);
+  position: relative;
+  overflow: hidden;
 }
 
-.radio-date {
-  color: #222222;
-
-  font-size: 18px;
+/* 나무 질감 오버레이 */
+.radio-body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.03) 2px,
+      rgba(0, 0, 0, 0.03) 4px
+    );
+  pointer-events: none;
+  border-radius: 27px;
 }
 
-a {
-  color: #fff;
+/* 헤더 영역 */
+.radio-header {
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+/* 라디오 표시등 */
+.radio-indicator {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.indicator-light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--radio-amber);
+  box-shadow:
+    0 0 10px var(--radio-amber-glow),
+    0 0 20px var(--shadow-glow),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.indicator-light:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.indicator-light:nth-child(3) {
+  animation-delay: 1s;
+}
+
+@keyframes glow {
+  from {
+    box-shadow:
+      0 0 10px var(--radio-amber-glow),
+      0 0 20px var(--shadow-glow),
+      inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+  }
+  to {
+    box-shadow:
+      0 0 15px var(--radio-amber-glow),
+      0 0 30px var(--shadow-glow),
+      0 0 40px rgba(255, 179, 0, 0.2),
+      inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* 제목 스타일 */
+h1 {
+  font-family: 'Playfair Display', 'Noto Serif KR', serif;
+  font-size: 2.5em;
+  color: var(--radio-cream);
+  text-shadow:
+    2px 2px 4px var(--shadow-warm),
+    0 0 30px var(--shadow-glow);
+  margin: 0 0 10px 0;
+  letter-spacing: 3px;
+}
+
+h3 {
+  font-size: 1em;
+  color: var(--radio-dial);
+  font-weight: 400;
+  margin: 0;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+/* 주파수 다이얼 패널 */
+.dial-panel {
+  background: linear-gradient(180deg, var(--radio-leather) 0%, #2C1810 100%);
+  border-radius: 15px;
+  padding: 25px;
+  margin: 30px 0;
+  box-shadow:
+    inset 0 4px 8px rgba(0, 0, 0, 0.4),
+    0 2px 4px rgba(255, 255, 255, 0.05);
+  border: 2px solid var(--radio-wood-dark);
+}
+
+/* 주파수 표시 */
+.frequency-display {
+  background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  border: 2px solid var(--radio-gold);
+  position: relative;
+  overflow: hidden;
+}
+
+.frequency-display::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.frequency-text {
+  font-family: 'Courier New', monospace;
+  font-size: 1.2em;
+  color: var(--radio-amber);
+  text-shadow: 0 0 10px var(--radio-amber-glow);
+  text-align: center;
+  margin: 0;
+}
+
+/* ===== 뷰 모드 버튼 ===== */
+.view-mode-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.view-btn {
+  background: linear-gradient(145deg, rgba(255, 248, 225, 0.1) 0%, rgba(255, 248, 225, 0.05) 100%);
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  color: var(--radio-cream);
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-family: 'Noto Serif KR', serif;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.view-btn:hover {
+  background: linear-gradient(145deg, rgba(255, 248, 225, 0.15) 0%, rgba(255, 248, 225, 0.08) 100%);
+  border-color: rgba(212, 175, 55, 0.5);
+}
+
+.view-btn.active {
+  background: linear-gradient(135deg, var(--radio-amber) 0%, var(--radio-gold) 100%);
+  color: var(--radio-leather);
+  border-color: var(--radio-gold);
+  font-weight: 600;
+  box-shadow: 0 4px 12px var(--shadow-glow);
+}
+
+/* 검색 입력창 - 다이얼 스타일 */
+.search-container {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.search-container::before {
+  content: '🔍';
+  position: absolute;
+  left: 15px;
+  top: 22px;
+  font-size: 1em;
+  opacity: 0.7;
+  z-index: 1;
 }
 
 input {
-  padding: 15px;
-  width: 320px;
+  width: 100%;
+  padding: 18px 20px 18px 45px;
+  font-size: 1em;
+  font-family: 'Noto Serif KR', serif;
+  background: linear-gradient(180deg, var(--radio-cream) 0%, #F5F0E0 100%);
+  border: 3px solid var(--radio-gold);
+  border-radius: 25px;
+  color: var(--radio-text-dark);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.1),
+    0 4px 8px var(--shadow-warm);
+  transition: all 0.3s ease;
+  outline: none;
 }
 
-ol {
-  counter-reset: item;
+input::placeholder {
+  color: var(--radio-text-warm);
+  opacity: 0.6;
+}
+
+input:focus {
+  border-color: var(--radio-amber);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.1),
+    0 4px 8px var(--shadow-warm),
+    0 0 20px var(--shadow-glow);
+}
+
+/* ===== 검색 자동완성 ===== */
+.suggestions-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--radio-cream);
+  border: 2px solid var(--radio-gold);
+  border-top: none;
+  border-radius: 0 0 15px 15px;
+  list-style: none;
   padding: 0;
+  margin: 0;
+  z-index: 100;
+  box-shadow: 0 8px 16px var(--shadow-warm);
+  overflow: hidden;
 }
-ol li {
+
+.suggestions-list li {
+  padding: 12px 20px;
+  color: var(--radio-text-dark);
+  cursor: pointer;
+  transition: background 0.2s ease;
+  border-bottom: 1px solid rgba(93, 64, 55, 0.1);
+}
+
+.suggestions-list li:last-child {
+  border-bottom: none;
+}
+
+.suggestions-list li:hover {
+  background: rgba(255, 179, 0, 0.2);
+}
+
+/* ===== 코너 필터 태그 ===== */
+.corner-filters {
+  margin-top: 15px;
+}
+
+.filter-label {
   display: block;
-  padding: 100px 0px;
-  border-bottom: 1px solid #fefefe;
-}
-ol li::before {
-  content: counter(item) " 일째";
-  counter-increment: item;
-  font-size: 20px;
+  font-size: 0.8em;
+  color: var(--radio-dial);
+  margin-bottom: 10px;
   opacity: 0.8;
-  /* padding-right: 15px;
-  border-right: 2.5px solid rgba(37, 194, 240, 0.8);
-  margin-right: 15px; */
+}
+
+.corner-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.corner-tag {
+  background: rgba(255, 248, 225, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: var(--radio-cream);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Noto Serif KR', serif;
+}
+
+.corner-tag:hover {
+  background: rgba(255, 248, 225, 0.15);
+  border-color: rgba(212, 175, 55, 0.5);
+}
+
+.corner-tag.active {
+  background: var(--radio-amber);
+  color: var(--radio-leather);
+  border-color: var(--radio-amber);
+  font-weight: 600;
+}
+
+.clear-filters {
+  background: transparent;
+  border: 1px solid rgba(255, 100, 100, 0.5);
+  color: #ff9999;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.75em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Noto Serif KR', serif;
+}
+
+.clear-filters:hover {
+  background: rgba(255, 100, 100, 0.2);
+  border-color: rgba(255, 100, 100, 0.7);
+}
+
+/* 스피커 그릴 장식 */
+.speaker-grill {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 25px 0;
+}
+
+.grill-line {
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--radio-wood-dark) 0%, var(--radio-wood-light) 50%, var(--radio-wood-dark) 100%);
+  border-radius: 2px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* 에피소드 카운터 */
+.episode-counter {
+  text-align: center;
+  margin: 20px 0;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.counter-text {
+  font-size: 0.9em;
+  color: var(--radio-dial);
+  margin: 0;
+}
+
+.counter-number {
+  font-size: 1.5em;
+  color: var(--radio-amber);
+  font-weight: 700;
+  text-shadow: 0 0 10px var(--shadow-glow);
+}
+
+.filter-info {
+  display: block;
+  font-size: 0.75em;
+  opacity: 0.7;
+  margin-top: 5px;
+}
+
+/* ===== 에피소드 리스트 뷰 ===== */
+.episode-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.episode-list li {
+  display: block;
+  background: linear-gradient(145deg, rgba(255, 248, 225, 0.08) 0%, rgba(255, 248, 225, 0.03) 100%);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.episode-list li:hover {
+  background: linear-gradient(145deg, rgba(255, 248, 225, 0.12) 0%, rgba(255, 248, 225, 0.06) 100%);
+  border-color: rgba(212, 175, 55, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--shadow-warm);
+}
+
+.episode-number {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--radio-amber) 0%, var(--radio-gold) 100%);
+  color: var(--radio-leather);
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 0.7em;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* 날짜 스타일 */
+.radio-date {
+  font-size: 0.8em;
+  color: var(--radio-dial);
+  opacity: 0.8;
+  margin: 5px 0;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+}
+
+/* 제목 */
+.episode-title {
+  font-size: 1em;
+  color: var(--radio-cream);
+  margin: 0 0 12px 0;
+  line-height: 1.5;
+}
+
+/* 에피소드 메타 정보 */
+.episode-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.corner-badge {
+  background: rgba(255, 248, 225, 0.15);
+  color: var(--radio-dial);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75em;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+/* 링크 버튼 */
+a.play-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, var(--radio-amber) 0%, var(--radio-gold) 100%);
+  color: var(--radio-leather);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px var(--shadow-warm);
+}
+
+a.play-link:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 5px 10px var(--shadow-warm),
+    0 0 15px var(--shadow-glow);
+}
+
+a.play-link::before {
+  content: '▶';
+  font-size: 0.75em;
+}
+
+/* 더보기 버튼 */
+.load-more-btn {
+  display: block;
+  width: 100%;
+  padding: 15px 20px;
+  margin-top: 10px;
+  background: linear-gradient(145deg, rgba(255, 179, 0, 0.2) 0%, rgba(255, 179, 0, 0.1) 100%);
+  border: 2px solid rgba(255, 179, 0, 0.4);
+  border-radius: 15px;
+  color: var(--radio-amber);
+  font-family: 'Noto Serif KR', serif;
+  font-size: 0.95em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.load-more-btn:hover {
+  background: linear-gradient(145deg, rgba(255, 179, 0, 0.3) 0%, rgba(255, 179, 0, 0.2) 100%);
+  border-color: var(--radio-amber);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow-glow);
+}
+
+/* ===== 캘린더 뷰 ===== */
+.calendar-view {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.month-nav {
+  background: rgba(255, 248, 225, 0.1);
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  color: var(--radio-cream);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.month-nav:hover {
+  background: rgba(255, 248, 225, 0.2);
+  border-color: var(--radio-amber);
+}
+
+.current-month {
+  font-size: 1.3em;
+  color: var(--radio-cream);
+  margin: 0;
+  font-weight: 400;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.weekday {
+  text-align: center;
+  color: var(--radio-dial);
+  font-size: 0.8em;
+  padding: 8px 0;
+  opacity: 0.8;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  min-height: 50px;
+}
+
+.calendar-day.empty {
+  cursor: default;
+}
+
+.calendar-day.has-day {
+  background: rgba(255, 248, 225, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.calendar-day.has-day:hover {
+  background: rgba(255, 248, 225, 0.1);
+  border-color: rgba(212, 175, 55, 0.3);
+}
+
+.calendar-day.has-episodes {
+  background: rgba(255, 179, 0, 0.15);
+  border-color: rgba(255, 179, 0, 0.3);
+}
+
+.calendar-day.has-episodes:hover {
+  background: rgba(255, 179, 0, 0.25);
+}
+
+.calendar-day.selected {
+  background: var(--radio-amber) !important;
+  border-color: var(--radio-gold) !important;
+}
+
+.calendar-day.selected .day-number {
+  color: var(--radio-leather);
+}
+
+.calendar-day.selected .episode-dot {
+  background: var(--radio-leather);
+  color: var(--radio-amber);
+}
+
+.day-number {
+  font-size: 0.9em;
+  color: var(--radio-cream);
+}
+
+.episode-dot {
+  position: absolute;
+  bottom: 5px;
+  background: var(--radio-amber);
+  color: var(--radio-leather);
+  font-size: 0.6em;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 선택된 날짜의 에피소드 */
+.selected-date-episodes {
+  margin-top: 20px;
+  background: rgba(255, 248, 225, 0.05);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.selected-date-title {
+  color: var(--radio-amber);
+  font-size: 1.1em;
+  margin: 0 0 15px 0;
+  font-weight: 400;
+}
+
+.date-episode-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.date-episode-list li {
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.date-episode-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== 코너별 뷰 ===== */
+.corner-view {
+  display: grid;
+  gap: 15px;
+}
+
+.corner-section {
+  background: rgba(255, 248, 225, 0.05);
+  border-radius: 15px;
+  padding: 20px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  transition: all 0.3s ease;
+}
+
+.corner-section:hover {
+  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(255, 248, 225, 0.08);
+}
+
+.corner-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.corner-name {
+  color: var(--radio-amber);
+  font-size: 1.1em;
+  margin: 0;
+  font-weight: 600;
+}
+
+.corner-count {
+  background: rgba(255, 179, 0, 0.2);
+  color: var(--radio-dial);
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 0.8em;
+}
+
+.corner-episode-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.corner-episode-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 248, 225, 0.05);
+}
+
+.corner-episode-list li:last-child {
+  border-bottom: none;
+}
+
+.episode-date {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8em;
+  color: var(--radio-dial);
+  opacity: 0.7;
+  min-width: 50px;
+}
+
+.episode-title-short {
+  flex: 1;
+  font-size: 0.9em;
+  color: var(--radio-cream);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+a.play-link-small {
+  background: var(--radio-amber);
+  color: var(--radio-leather);
+  text-decoration: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7em;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+a.play-link-small:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px var(--shadow-glow);
+}
+
+/* 코너 확장 버튼 */
+.corner-expand-btn {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  margin-top: 10px;
+  background: linear-gradient(145deg, rgba(255, 179, 0, 0.15) 0%, rgba(255, 179, 0, 0.08) 100%);
+  border: 1px solid rgba(255, 179, 0, 0.3);
+  border-radius: 10px;
+  color: var(--radio-dial);
+  font-family: 'Noto Serif KR', serif;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.corner-expand-btn:hover {
+  background: linear-gradient(145deg, rgba(255, 179, 0, 0.25) 0%, rgba(255, 179, 0, 0.15) 100%);
+  border-color: var(--radio-amber);
+  color: var(--radio-amber);
+}
+
+/* 푸터 장식 */
+.radio-footer {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.footer-text {
+  font-size: 0.8em;
+  color: var(--radio-dial);
+  opacity: 0.6;
+  margin: 0;
+}
+
+/* 볼륨 노브 장식 */
+.volume-knobs {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 30px;
+}
+
+.knob {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(145deg, var(--radio-wood-light) 0%, var(--radio-wood-dark) 100%);
+  border-radius: 50%;
+  border: 3px solid var(--radio-gold);
+  box-shadow:
+    0 4px 8px var(--shadow-warm),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.knob::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 12px;
+  background: var(--radio-gold);
+  border-radius: 2px;
+}
+
+.knob-label {
+  font-size: 0.7em;
+  color: var(--radio-dial);
+  text-align: center;
+  margin-top: 8px;
+  opacity: 0.7;
+}
+
+/* 스크롤바 커스터마이징 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--radio-leather);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--radio-wood);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--radio-wood-light);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 600px) {
+  #app {
+    padding: 20px 10px;
+  }
+
+  .radio-body {
+    padding: 25px 15px;
+    border-radius: 20px;
+  }
+
+  h1 {
+    font-size: 1.6em;
+    letter-spacing: 1px;
+  }
+
+  h3 {
+    font-size: 0.85em;
+  }
+
+  .view-mode-buttons {
+    gap: 6px;
+  }
+
+  .view-btn {
+    padding: 10px 14px;
+    font-size: 0.8em;
+  }
+
+  .corner-tags {
+    gap: 6px;
+  }
+
+  .corner-tag {
+    padding: 5px 10px;
+    font-size: 0.75em;
+  }
+
+  .episode-list li {
+    padding: 15px;
+  }
+
+  .calendar-day {
+    min-height: 40px;
+  }
+
+  .day-number {
+    font-size: 0.8em;
+  }
+
+  .episode-dot {
+    width: 14px;
+    height: 14px;
+    font-size: 0.5em;
+  }
+
+  .corner-section {
+    padding: 15px;
+  }
+
+  .volume-knobs {
+    gap: 25px;
+  }
+
+  .knob {
+    width: 40px;
+    height: 40px;
+  }
 }
