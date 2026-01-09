@@ -196,19 +196,54 @@ h3 {
   margin: 0;
 }
 
+/* ===== 뷰 모드 버튼 ===== */
+.view-mode-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.view-btn {
+  background: linear-gradient(145deg, rgba(255, 248, 225, 0.1) 0%, rgba(255, 248, 225, 0.05) 100%);
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  color: var(--radio-cream);
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-family: 'Noto Serif KR', serif;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.view-btn:hover {
+  background: linear-gradient(145deg, rgba(255, 248, 225, 0.15) 0%, rgba(255, 248, 225, 0.08) 100%);
+  border-color: rgba(212, 175, 55, 0.5);
+}
+
+.view-btn.active {
+  background: linear-gradient(135deg, var(--radio-amber) 0%, var(--radio-gold) 100%);
+  color: var(--radio-leather);
+  border-color: var(--radio-gold);
+  font-weight: 600;
+  box-shadow: 0 4px 12px var(--shadow-glow);
+}
+
 /* 검색 입력창 - 다이얼 스타일 */
 .search-container {
   position: relative;
+  margin-bottom: 15px;
 }
 
 .search-container::before {
   content: '🔍';
   position: absolute;
   left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 22px;
   font-size: 1em;
   opacity: 0.7;
+  z-index: 1;
 }
 
 input {
@@ -238,6 +273,101 @@ input:focus {
     inset 0 2px 4px rgba(0, 0, 0, 0.1),
     0 4px 8px var(--shadow-warm),
     0 0 20px var(--shadow-glow);
+}
+
+/* ===== 검색 자동완성 ===== */
+.suggestions-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--radio-cream);
+  border: 2px solid var(--radio-gold);
+  border-top: none;
+  border-radius: 0 0 15px 15px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  z-index: 100;
+  box-shadow: 0 8px 16px var(--shadow-warm);
+  overflow: hidden;
+}
+
+.suggestions-list li {
+  padding: 12px 20px;
+  color: var(--radio-text-dark);
+  cursor: pointer;
+  transition: background 0.2s ease;
+  border-bottom: 1px solid rgba(93, 64, 55, 0.1);
+}
+
+.suggestions-list li:last-child {
+  border-bottom: none;
+}
+
+.suggestions-list li:hover {
+  background: rgba(255, 179, 0, 0.2);
+}
+
+/* ===== 코너 필터 태그 ===== */
+.corner-filters {
+  margin-top: 15px;
+}
+
+.filter-label {
+  display: block;
+  font-size: 0.8em;
+  color: var(--radio-dial);
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
+
+.corner-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.corner-tag {
+  background: rgba(255, 248, 225, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: var(--radio-cream);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Noto Serif KR', serif;
+}
+
+.corner-tag:hover {
+  background: rgba(255, 248, 225, 0.15);
+  border-color: rgba(212, 175, 55, 0.5);
+}
+
+.corner-tag.active {
+  background: var(--radio-amber);
+  color: var(--radio-leather);
+  border-color: var(--radio-amber);
+  font-weight: 600;
+}
+
+.clear-filters {
+  background: transparent;
+  border: 1px solid rgba(255, 100, 100, 0.5);
+  color: #ff9999;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.75em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Noto Serif KR', serif;
+}
+
+.clear-filters:hover {
+  background: rgba(255, 100, 100, 0.2);
+  border-color: rgba(255, 100, 100, 0.7);
 }
 
 /* 스피커 그릴 장식 */
@@ -278,107 +408,392 @@ input:focus {
   text-shadow: 0 0 10px var(--shadow-glow);
 }
 
-/* 에피소드 리스트 */
-ol {
+.filter-info {
+  display: block;
+  font-size: 0.75em;
+  opacity: 0.7;
+  margin-top: 5px;
+}
+
+/* ===== 에피소드 리스트 뷰 ===== */
+.episode-list {
   list-style: none;
-  counter-reset: episode;
   padding: 0;
   margin: 0;
 }
 
-ol li {
+.episode-list li {
   display: block;
   background: linear-gradient(145deg, rgba(255, 248, 225, 0.08) 0%, rgba(255, 248, 225, 0.03) 100%);
   border-radius: 15px;
-  padding: 25px;
-  margin-bottom: 15px;
+  padding: 20px;
+  margin-bottom: 12px;
   border: 1px solid rgba(212, 175, 55, 0.2);
   transition: all 0.3s ease;
   position: relative;
-  overflow: hidden;
 }
 
-ol li::before {
-  counter-increment: episode;
-  content: counter(episode) "일째";
-  display: inline-block;
-  background: linear-gradient(135deg, var(--radio-amber) 0%, var(--radio-gold) 100%);
-  color: var(--radio-leather);
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 0.75em;
-  font-weight: 700;
-  margin-bottom: 12px;
-  box-shadow: 0 2px 4px var(--shadow-warm);
-}
-
-ol li:hover {
+.episode-list li:hover {
   background: linear-gradient(145deg, rgba(255, 248, 225, 0.12) 0%, rgba(255, 248, 225, 0.06) 100%);
   border-color: rgba(212, 175, 55, 0.4);
   transform: translateY(-2px);
   box-shadow: 0 8px 20px var(--shadow-warm);
 }
 
-/* 빈티지 레코드 효과 */
-ol li::after {
-  content: '♪';
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 2em;
-  opacity: 0.1;
-  transition: opacity 0.3s ease;
-}
-
-ol li:hover::after {
-  opacity: 0.25;
+.episode-number {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--radio-amber) 0%, var(--radio-gold) 100%);
+  color: var(--radio-leather);
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 0.7em;
+  font-weight: 700;
+  margin-bottom: 10px;
 }
 
 /* 날짜 스타일 */
 .radio-date {
-  font-size: 0.85em;
+  font-size: 0.8em;
   color: var(--radio-dial);
   opacity: 0.8;
-  margin-bottom: 8px;
+  margin: 5px 0;
   font-family: 'Courier New', monospace;
   letter-spacing: 1px;
 }
 
 /* 제목 */
 .episode-title {
-  font-size: 1.1em;
+  font-size: 1em;
   color: var(--radio-cream);
-  margin: 0 0 15px 0;
+  margin: 0 0 12px 0;
   line-height: 1.5;
+}
+
+/* 에피소드 메타 정보 */
+.episode-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.corner-badge {
+  background: rgba(255, 248, 225, 0.15);
+  color: var(--radio-dial);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75em;
+  border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
 /* 링크 버튼 */
 a.play-link {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: linear-gradient(135deg, var(--radio-amber) 0%, var(--radio-gold) 100%);
   color: var(--radio-leather);
   text-decoration: none;
-  padding: 10px 20px;
-  border-radius: 25px;
-  font-size: 0.9em;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85em;
   font-weight: 600;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 8px var(--shadow-warm);
+  box-shadow: 0 3px 6px var(--shadow-warm);
 }
 
 a.play-link:hover {
   transform: scale(1.05);
   box-shadow:
-    0 6px 12px var(--shadow-warm),
-    0 0 20px var(--shadow-glow);
+    0 5px 10px var(--shadow-warm),
+    0 0 15px var(--shadow-glow);
 }
 
 a.play-link::before {
   content: '▶';
+  font-size: 0.75em;
+}
+
+.load-more-hint {
+  text-align: center;
+  color: var(--radio-dial);
+  font-size: 0.85em;
+  opacity: 0.7;
+  padding: 20px;
+}
+
+/* ===== 캘린더 뷰 ===== */
+.calendar-view {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.month-nav {
+  background: rgba(255, 248, 225, 0.1);
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  color: var(--radio-cream);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.month-nav:hover {
+  background: rgba(255, 248, 225, 0.2);
+  border-color: var(--radio-amber);
+}
+
+.current-month {
+  font-size: 1.3em;
+  color: var(--radio-cream);
+  margin: 0;
+  font-weight: 400;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.weekday {
+  text-align: center;
+  color: var(--radio-dial);
   font-size: 0.8em;
+  padding: 8px 0;
+  opacity: 0.8;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  min-height: 50px;
+}
+
+.calendar-day.empty {
+  cursor: default;
+}
+
+.calendar-day.has-day {
+  background: rgba(255, 248, 225, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.calendar-day.has-day:hover {
+  background: rgba(255, 248, 225, 0.1);
+  border-color: rgba(212, 175, 55, 0.3);
+}
+
+.calendar-day.has-episodes {
+  background: rgba(255, 179, 0, 0.15);
+  border-color: rgba(255, 179, 0, 0.3);
+}
+
+.calendar-day.has-episodes:hover {
+  background: rgba(255, 179, 0, 0.25);
+}
+
+.calendar-day.selected {
+  background: var(--radio-amber) !important;
+  border-color: var(--radio-gold) !important;
+}
+
+.calendar-day.selected .day-number {
+  color: var(--radio-leather);
+}
+
+.calendar-day.selected .episode-dot {
+  background: var(--radio-leather);
+  color: var(--radio-amber);
+}
+
+.day-number {
+  font-size: 0.9em;
+  color: var(--radio-cream);
+}
+
+.episode-dot {
+  position: absolute;
+  bottom: 5px;
+  background: var(--radio-amber);
+  color: var(--radio-leather);
+  font-size: 0.6em;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 선택된 날짜의 에피소드 */
+.selected-date-episodes {
+  margin-top: 20px;
+  background: rgba(255, 248, 225, 0.05);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.selected-date-title {
+  color: var(--radio-amber);
+  font-size: 1.1em;
+  margin: 0 0 15px 0;
+  font-weight: 400;
+}
+
+.date-episode-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.date-episode-list li {
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.date-episode-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== 코너별 뷰 ===== */
+.corner-view {
+  display: grid;
+  gap: 15px;
+}
+
+.corner-section {
+  background: rgba(255, 248, 225, 0.05);
+  border-radius: 15px;
+  padding: 20px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  transition: all 0.3s ease;
+}
+
+.corner-section:hover {
+  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(255, 248, 225, 0.08);
+}
+
+.corner-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.corner-name {
+  color: var(--radio-amber);
+  font-size: 1.1em;
+  margin: 0;
+  font-weight: 600;
+}
+
+.corner-count {
+  background: rgba(255, 179, 0, 0.2);
+  color: var(--radio-dial);
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 0.8em;
+}
+
+.corner-episode-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.corner-episode-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 248, 225, 0.05);
+}
+
+.corner-episode-list li:last-child {
+  border-bottom: none;
+}
+
+.episode-date {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8em;
+  color: var(--radio-dial);
+  opacity: 0.7;
+  min-width: 50px;
+}
+
+.episode-title-short {
+  flex: 1;
+  font-size: 0.9em;
+  color: var(--radio-cream);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+a.play-link-small {
+  background: var(--radio-amber);
+  color: var(--radio-leather);
+  text-decoration: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7em;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+a.play-link-small:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px var(--shadow-glow);
+}
+
+.more-episodes {
+  color: var(--radio-dial);
+  font-size: 0.85em;
+  opacity: 0.7;
+  cursor: pointer;
+  padding: 10px 0 !important;
+  justify-content: center !important;
+}
+
+.more-episodes:hover {
+  opacity: 1;
+  color: var(--radio-amber);
 }
 
 /* 푸터 장식 */
@@ -459,25 +874,61 @@ a.play-link::before {
 /* 반응형 디자인 */
 @media (max-width: 600px) {
   #app {
-    padding: 20px 15px;
+    padding: 20px 10px;
   }
 
   .radio-body {
-    padding: 25px 20px;
+    padding: 25px 15px;
     border-radius: 20px;
   }
 
   h1 {
-    font-size: 1.8em;
+    font-size: 1.6em;
     letter-spacing: 1px;
   }
 
   h3 {
-    font-size: 0.9em;
+    font-size: 0.85em;
   }
 
-  ol li {
-    padding: 20px 15px;
+  .view-mode-buttons {
+    gap: 6px;
+  }
+
+  .view-btn {
+    padding: 10px 14px;
+    font-size: 0.8em;
+  }
+
+  .corner-tags {
+    gap: 6px;
+  }
+
+  .corner-tag {
+    padding: 5px 10px;
+    font-size: 0.75em;
+  }
+
+  .episode-list li {
+    padding: 15px;
+  }
+
+  .calendar-day {
+    min-height: 40px;
+  }
+
+  .day-number {
+    font-size: 0.8em;
+  }
+
+  .episode-dot {
+    width: 14px;
+    height: 14px;
+    font-size: 0.5em;
+  }
+
+  .corner-section {
+    padding: 15px;
   }
 
   .volume-knobs {
